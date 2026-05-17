@@ -1,8 +1,22 @@
+from flask import Flask
+from threading import Thread
 from datetime import datetime
 from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, MessageHandler, filters
 
-BOT_TOKEN = "8077301203:AAHll6bZvOmQWklAcTMJFS14tCnhtZHpm0Q"
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+
+web_app = Flask(__name__)
+
+@web_app.route("/")
+def home():
+    return "Bot is running"
+
+def run_web():
+    port = int(os.environ.get("PORT", 10000))
+    web_app.run(host="0.0.0.0", port=port)
+
+Thread(target=run_web, daemon=True).start()
 
 group_data = {}
 
